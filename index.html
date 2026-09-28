@@ -1,58 +1,394 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fomento a la Lectura</title>
-    <link rel="stylesheet" href="css/estilo.css">
+    <title>Supercars Legend | Porsche, Aston Martin & Pagani</title>
+    <!-- Fuentes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           VARIABLES & RESET
+        ========================================== */
+        :root {
+            --bg-color: #0a0b0d;
+            --card-bg: #13171f;
+            --text-main: #e0e6ed;
+            --text-muted: #94a3b8;
+            --accent-porsche: #ff3b30;
+            --accent-aston: #00e676;
+            --accent-pagani: #e5a93c;
+            --font-title: 'Orbitron', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
+
+        /* Fondo dinámico */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90vw;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ==========================================
+           HEADER
+        ========================================== */
+        header {
+            text-align: center;
+            padding: 3.5rem 1rem 1.5rem;
+        }
+
+        header .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e5a93c;
+            background: rgba(229, 169, 60, 0.1);
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(229, 169, 60, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-family: var(--font-title);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, #ffffff 0%, #777777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+            font-weight: 300;
+        }
+
+        /* ==========================================
+           GRID & CARDS
+        ========================================== */
+        .container {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Imágenes */
+        .card-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 12px;
+            color: #000;
+            background: #fff;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Contenido */
+        .card-content {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .brand-subtitle {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.2rem;
+        }
+
+        .card-title {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Especificaciones */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.8rem;
+            border-radius: 12px;
+            margin-top: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .spec-item {
+            text-align: center;
+        }
+
+        .spec-value {
+            font-family: var(--font-title);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+        }
+
+        .spec-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Botones */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Personalización por marca */
+        /* Porsche */
+        .porsche .brand-subtitle, .porsche .spec-value { color: var(--accent-porsche); }
+        .porsche:hover { border-color: rgba(255, 59, 48, 0.4); }
+        .porsche .btn:hover { background: var(--accent-porsche); color: #fff; box-shadow: 0 0 15px rgba(255, 59, 48, 0.4); }
+
+        /* Aston Martin */
+        .aston .brand-subtitle, .aston .spec-value { color: var(--accent-aston); }
+        .aston:hover { border-color: rgba(0, 230, 118, 0.4); }
+        .aston .btn:hover { background: var(--accent-aston); color: #000; box-shadow: 0 0 15px rgba(0, 230, 118, 0.4); }
+
+        /* Pagani */
+        .pagani .brand-subtitle, .pagani .spec-value { color: var(--accent-pagani); }
+        .pagani:hover { border-color: rgba(229, 169, 60, 0.4); }
+        .pagani .btn:hover { background: var(--accent-pagani); color: #000; box-shadow: 0 0 15px rgba(229, 169, 60, 0.4); }
+
+        /* ==========================================
+           FOOTER
+        ========================================== */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 480px) {
+            .specs-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <header>
-        <div class="wave-container">
-        <h1 class="wave-text">
-            <span>F</span><span>o</span><span>m</span><span>e</span><span>n</span><span>t</span><span>o</span><span>a</span><span>l</span><span>a</span><span>L</span><span>e</span><span>c</span><span>t</span><span>u</span><span>r</span><span>a</span>
-        </h1>
-    </div>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="beneficio.html">Beneficios</a></li>
-            <li><a href="consejos.html">Consejos</a></li>
-            <li><a href="recomendacion.html">Recomendaciones</a></li>
-            <li><a href="retos.html">Retos</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section>
-            <h2>"Olvida todo lo que te dijeron en la escuela: leer no es un castigo, es un superpoder. 
-                En un mundo lleno de scrolls infinitos y notificaciones que no te dejan pensar, 
-                abrir un libro es un acto de rebeldía. Esta página es tu refugio contra el ruido. 
-                Aquí seleccionamos solo las historias que valen la pena, las que te vuelan la cabeza y 
-                te dejan pensando a las tres de la mañana. Entra, elige tu arma y empieza a leer."</h2>
-        </section>
 
-        <section>
-            <p>
-              <em> "Un lector vive mil vidas antes de morir. El que nunca lee solo vive una."</em><br><strong> – George R.R. Martin.</strong>
-            </p>
-            <br>
-            <p>
-                <em> "La lectura es un ticket de viaje a cualquier lugar."</em><br><strong> – Anónimo.</strong>
-            </p>
-        </section>
-        <section>
-            <center>
-                <img src="img/portada.jpg" alt="portada" width="625px" height="345px">
-            </center>
+    <!-- Header -->
+    <header>
+        <span class="badge">Hiperdeportivos & Exclusividad</span>
+        <h1>Leyendas del Asfalto</h1>
+        <p>Una selección de ingeniería suprema, potencia desmedida y diseño atemporal.</p>
+    </header>
+
+    <!-- Cards Grid Container -->
+    <main class="container">
+        <div class="cards-grid">
             
-        </section>
+            <!-- Porsche Card -->
+            <article class="card porsche">
+                <div class="card-img-wrapper">
+                    <span class="card-tag">Alemania</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Porsche_911_GT3_RS_%282022%29_1X7A7164.jpg/800px-Porsche_911_GT3_RS_%282022%29_1X7A7164.jpg" alt="Porsche 911 GT3 RS">
+                </div>
+                <div class="card-content">
+                    <span class="brand-subtitle">Porsche</span>
+                    <h2 class="card-title">911 GT3 RS</h2>
+                    <p class="card-desc">Diseñado puramente para la pista con aerodinámica activa y un motor atmosférico de 4.0L que desafía los límites de la física.</p>
+                    
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <span class="spec-value">525 HP</span>
+                            <span class="spec-label">Potencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">3.2s</span>
+                            <span class="spec-label">0-100 km/h</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">296 km/h</span>
+                            <span class="spec-label">V. Máxima</span>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn">Explorar Porsche</a>
+                </div>
+            </article>
+
+            <!-- Aston Martin Card -->
+            <article class="card aston">
+                <div class="card-img-wrapper">
+                    <span class="card-tag">Reino Unido</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Aston_Martin_DBS_Superleggera_1X7A0207.jpg/800px-Aston_Martin_DBS_Superleggera_1X7A0207.jpg" alt="Aston Martin DBS Superleggera">
+                </div>
+                <div class="card-content">
+                    <span class="brand-subtitle">Aston Martin</span>
+                    <h2 class="card-title">DBS Superleggera</h2>
+                    <p class="card-desc">La combinación perfecta entre la elegancia británica y la fuerza bruta de un motor V12 Twin-Turbo insuperable.</p>
+                    
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <span class="spec-value">725 HP</span>
+                            <span class="spec-label">Potencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">3.4s</span>
+                            <span class="spec-label">0-100 km/h</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">340 km/h</span>
+                            <span class="spec-label">V. Máxima</span>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn">Explorar Aston Martin</a>
+                </div>
+            </article>
+
+            <!-- Pagani Card -->
+            <article class="card pagani">
+                <div class="card-img-wrapper">
+                    <span class="card-tag">Italia</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Pagani_Huayra.jpg/800px-Pagani_Huayra.jpg" alt="Pagani Huayra">
+                </div>
+                <div class="card-content">
+                    <span class="brand-subtitle">Pagani</span>
+                    <h2 class="card-title">Huayra</h2>
+                    <p class="card-desc">Una obra de arte sobre ruedas fabricada en carbo-titanio con un motor V12 biturbo hecho a mano por AMG para Horacio Pagani.</p>
+                    
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <span class="spec-value">730 HP</span>
+                            <span class="spec-label">Potencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">3.0s</span>
+                            <span class="spec-label">0-100 km/h</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-value">383 km/h</span>
+                            <span class="spec-label">V. Máxima</span>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn">Explorar Pagani</a>
+                </div>
+            </article>
+
+        </div>
     </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; Supercars Showcase. Todos los derechos reservados.</p>
+    </footer>
+
 </body>
-<footer>
-    <h3>Elaborado por : </h3>
-    <h3>Diego Fernando Sanchez Hernández</h3>
-    <h3>Hector Hugo Esparza Hernández</h3>
-</footer>
 </html>
